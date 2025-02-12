@@ -1,0 +1,46 @@
+<div class="container">
+    <mat-card class="chat-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>chat</mat-icon> Asistente Virtual de Vehículos
+        </mat-card-title>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <form [formGroup]="chatForm" (ngSubmit)="enviarConsulta()">
+          <mat-form-field class="full-width">
+            <mat-label>Consulta</mat-label>
+            <input matInput formControlName="consulta" placeholder="Ejemplo: ¿Cuál es el modelo del vehículo?" required />
+            <mat-error *ngIf="chatForm.get('consulta')?.invalid">Ingrese una consulta</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <mat-label>Placa del Vehículo</mat-label>
+            <input matInput formControlName="placa" placeholder="Ejemplo: ABC123" required />
+            <mat-error *ngIf="chatForm.get('placa')?.invalid">Ingrese una placa válida</mat-error>
+          </mat-form-field>
+  
+          <div class="button-group">
+            <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+              <mat-icon>send</mat-icon> Enviar
+            </button>
+          </div>
+        </form>
+  
+        <mat-spinner *ngIf="isLoading" class="loading-spinner"></mat-spinner>
+  
+        <div *ngIf="respuesta" class="respuesta-container">
+          <mat-card class="respuesta-card">
+            <mat-card-header>
+              <mat-card-title>Respuesta del Asistente</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p><strong>Respuesta:</strong> {{ respuesta.respuesta }}</p>
+              <p><strong>Metodología:</strong> {{ respuesta.metodologia }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

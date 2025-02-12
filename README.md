@@ -1,27 +1,109 @@
-# Frontend
+# Proyecto de Chat con Angular 17 y Node.js
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.11.
+Este proyecto es una aplicación web de chat basada en **Angular 17**, **Node.js (Express)** y **MySQL**. Además, integra **OpenAI** para la generación de respuestas inteligentes.
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+## 📦 Estructura del Proyecto
 
-## Development server
+```
+mi-proyecto
+ ┣ 📂 backend (Node.js + Express + MySQL)
+ ┃ ┣ 📂 controllers  # Lógica de negocio (CRUD)
+ ┃ ┣ 📂 models       # Definición de la BD con Sequelize
+ ┃ ┣ 📂 routes       # Endpoints de Express
+ ┃ ┣ 📂 services     # Integración con OpenAI
+ ┃ ┣ 📜 server.js    # Punto de entrada
+ ┃ ┗ 📜 config.js    # Configuración de MySQL
+ ┣ 📂 frontend (Angular 17)
+ ┃ ┣ 📂 src
+ ┃ ┃ ┣ 📂 app
+ ┃ ┃ ┃ ┣ 📂 components
+ ┃ ┃ ┃ ┣ 📂 services
+ ┃ ┃ ┃ ┣ 📂 pages
+ ┃ ┃ ┃ ┗ 📜 app.module.ts
+ ┃ ┃ ┣ 📜 main.ts
+ ┃ ┃ ┣ 📜 styles.scss
+ ┃ ┗ 📜 angular.json
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 🚀 Tecnologías Utilizadas
 
-## Code scaffolding
+### Backend:
+- **Node.js** v22.13.1
+- **Express.js** (Framework web para Node.js)
+- **MySQL** (Base de datos relacional)
+- **Sequelize** (ORM para MySQL)
+- **dotenv** (Manejo de variables de entorno)
+- **cors** (Manejo de CORS)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Frontend:
+- **Angular 17** (Framework para frontend)
+- **Angular Material** (Componentes UI)
+- **RxJS** (Manejo de datos reactivos)
+- **TypeScript** (Lenguaje de programación tipado)
 
-## Build
+### Integraciones:
+- **OpenAI API** (Para generación de respuestas automáticas en el chat)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🔧 Instalación
 
-## Running unit tests
+### 1️⃣ Clonar el repositorio:
+```sh
+ git clone https://github.com/tu_usuario/mi-proyecto.git
+ cd mi-proyecto
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 2️⃣ Configurar el Backend
+```sh
+ cd backend
+ npm install
+```
+Crear un archivo `.env` con la configuración de la base de datos y la API de OpenAI:
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=tu_contraseña
+DB_NAME=chat_db
+OPENAI_API_KEY=tu_api_key
+```
+Ejecutar el servidor:
+```sh
+ node server.js
+```
 
-## Running end-to-end tests
+### 3️⃣ Configurar el Frontend
+```sh
+ cd frontend
+ npm install
+ ng serve
+```
+La aplicación estará disponible en `http://localhost:4200`.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 🛠️ Funcionalidades
+- 📌 Chat interactivo con integración de OpenAI.
+- 🔐 Autenticación de usuarios (opcional).
+- 🗄️ Almacenamiento de consultas en MySQL.
+- 🎨 Interfaz moderna con Angular Material.
 
-## Further help
+## 📌 API Endpoints
+### 📌 `POST /chat`
+- **Descripción**: Envía un mensaje al servidor y obtiene una respuesta de OpenAI.
+- **Cuerpo de la solicitud:**
+```json
+{
+  "placa": "ABC123",
+  "consulta": "¿Cuál es el historial del vehículo?"
+}
+```
+- **Respuesta:**
+```json
+{
+  "respuesta": "El vehículo con placa ABC123 tiene un historial limpio.",
+  "metodologia": "Datos obtenidos a través de OpenAI y consultas internas."
+}
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## 📄 Licencia
+Este proyecto está bajo la licencia MIT.
+

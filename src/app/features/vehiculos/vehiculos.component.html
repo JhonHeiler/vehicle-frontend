@@ -1,0 +1,43 @@
+<div class="container">
+    <h2 class="text-center mt-3">Lista de Vehículos</h2>
+  
+    <button mat-raised-button color="primary" class="mb-3" (click)="navegarA('/vehiculos/nuevo')">
+      <mat-icon>add</mat-icon> Agregar Vehículo
+    </button>
+  
+    <mat-spinner *ngIf="isLoading" class="loading-spinner"></mat-spinner>
+  
+    <mat-card *ngIf="!isLoading">
+      <table class="table table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Placa</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Color</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vehiculo of vehiculos">
+            <td>{{ vehiculo.placa }}</td>
+            <td>{{ vehiculo.marca }}</td>
+            <td>{{ vehiculo.modelo }}</td>
+            <td>{{ vehiculo.color }}</td>
+            <td>
+              <button mat-icon-button color="primary" (click)="navegarA('/vehiculos/detalle/' + vehiculo.placa)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" (click)="navegarA('/vehiculos/editar/' + vehiculo.placa)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="eliminarVehiculo(vehiculo.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </div>
+  

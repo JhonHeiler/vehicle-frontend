@@ -1,0 +1,52 @@
+.container {
+  max-width: 900px;
+  margin: auto;
+}
+
+.loading-spinner {
+  display: block;
+  margin: 40px auto;
+}
+
+mat-card {
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  font-weight: 600;
+}
+
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+
+th:nth-child(1), td:nth-child(1) { width: 15%; } /* Placa */
+th:nth-child(2), td:nth-child(2) { width: 20%; } /* Marca */
+th:nth-child(3), td:nth-child(3) { width: 20%; } /* Modelo */
+th:nth-child(4), td:nth-child(4) { width: 15%; } /* Color */
+th:nth-child(5), td:nth-child(5) { width: 30%; } /* Acciones */
+
+
+td:last-child {
+  white-space: nowrap;
+}
+
+
+.mat-icon-button {
+  margin: 0 5px;
+}
+
+
+.table-responsive {
+  overflow-x: auto;
+}
