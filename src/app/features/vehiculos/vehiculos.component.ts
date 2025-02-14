@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';  // <-- IMPORTA ESTO
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-vehiculos',
@@ -21,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';  // <-- IMPORTA ESTO
     MatButtonModule,
     MatProgressSpinnerModule,
     MatCardModule,
-    HttpClientModule // <-- AGREGA ESTO
+    HttpClientModule,
+    MatPaginatorModule 
   ],
   templateUrl: './vehiculos.component.html',
   styleUrls: ['./vehiculos.component.scss'],
@@ -30,6 +32,10 @@ import { HttpClientModule } from '@angular/common/http';  // <-- IMPORTA ESTO
 export class VehiculosComponent implements OnInit {
   vehiculos: Vehiculo[] = [];
   isLoading = true; // Para mostrar spinner de carga
+
+  // Propiedades para la paginación
+  pageSize = 6;
+  currentPage = 0;
 
   constructor(
     private vehiculoService: VehiculoService,
@@ -52,6 +58,18 @@ export class VehiculosComponent implements OnInit {
         this.mostrarMensaje('Error al cargar los vehículos', 'Cerrar');
       }
     );
+  }
+
+  // Getter para obtener los vehículos de la página actual
+  get paginatedVehiculos(): Vehiculo[] {
+    const startIndex = this.currentPage * this.pageSize;
+    return this.vehiculos.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  // Método que se dispara al cambiar de página
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 
   eliminarVehiculo(id?: number) {

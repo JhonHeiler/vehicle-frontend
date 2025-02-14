@@ -11,13 +11,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 @Component({
   selector: 'app-vehiculo-form',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule, // ✅ Importación necesaria para el formGroup
+    ReactiveFormsModule, // Importación necesaria para el formGroup
     MatCardModule,
     MatButtonModule,
     MatIconModule,
@@ -33,7 +34,7 @@ export class VehiculoFormComponent implements OnInit {
   vehiculoForm!: FormGroup;
   isEditMode = false;
   isLoading = false;
-  vehiculoId!:number;
+  vehiculoId!: number;
   // Al usar "placa" como identificador, no se convierte a número
   vehiculoPlaca!: string;
 
@@ -76,15 +77,14 @@ export class VehiculoFormComponent implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.mostrarMensaje('Error al cargar el vehículo', 'Cerrar');
+        this.mostrarAlerta('Error al cargar el vehículo', 'error');
       }
     );
   }
-  
 
   guardarVehiculo() {
     if (this.vehiculoForm.invalid) {
-      this.mostrarMensaje('Complete todos los campos correctamente', 'Cerrar');
+      this.mostrarAlerta('Complete todos los campos correctamente', 'error');
       return;
     }
 
@@ -93,14 +93,15 @@ export class VehiculoFormComponent implements OnInit {
 
     // Si está en modo edición se actualiza el vehículo
     if (this.isEditMode) {
-      // Usamos la placa precargada o la del formulario
       this.vehiculoService.update(this.vehiculoId, vehiculo).subscribe(
         () => {
-          this.mostrarMensaje('Vehículo actualizado correctamente', 'Cerrar');
-          this.router.navigate(['/vehiculos']);
+          this.mostrarAlerta('Vehículo actualizado correctamente', 'success').then(() => {
+            this.router.navigate(['/vehiculos']);
+          });
         },
         () => {
-          this.mostrarMensaje('Error al actualizar el vehículo', 'Cerrar');
+          this.isLoading = false;
+          this.mostrarAlerta('Error al actualizar el vehículo', 'error');
         }
       );
       return;
@@ -109,16 +110,30 @@ export class VehiculoFormComponent implements OnInit {
     // Si no está en modo edición se crea un vehículo nuevo
     this.vehiculoService.create(vehiculo).subscribe(
       () => {
-        this.mostrarMensaje('Vehículo registrado correctamente', 'Cerrar');
-        this.router.navigate(['/vehiculos']);
+        this.mostrarAlerta('Vehículo registrado correctamente', 'success').then(() => {
+          this.router.navigate(['/vehiculos']);
+        });
       },
-      () => this.mostrarMensaje('Error al registrar el vehículo', 'Cerrar')
+      () => {
+        this.isLoading = false;
+        this.mostrarAlerta('Error al registrar el vehículo', 'error');
+      }
     );
   }
 
-  mostrarMensaje(mensaje: string, accion: string) {
-    this.snackBar.open(mensaje, accion, { duration: 3000 });
-    this.isLoading = false;
+  /**
+   * Muestra una alerta bonita usando SweetAlert2.
+   * @param mensaje Texto de la alerta.
+   * @param icon Tipo de alerta: 'success' o 'error'.
+   */
+  mostrarAlerta(mensaje: string, icon: 'success' | 'error') {
+    return Swal.fire({
+      icon: icon,
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 1500,
+      position: 'top-end'
+    });
   }
 
   cancelar() {

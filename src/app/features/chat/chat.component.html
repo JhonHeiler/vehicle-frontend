@@ -10,7 +10,7 @@
         <form [formGroup]="chatForm" (ngSubmit)="enviarConsulta()">
           <mat-form-field class="full-width">
             <mat-label>Consulta</mat-label>
-            <input matInput formControlName="consulta" placeholder="Ejemplo: ¿Cuál es el modelo del vehículo?" required />
+            <input matInput formControlName="consulta" placeholder="Ejemplo: ¿Cuál es la informacion de este vehículo?" required />
             <mat-error *ngIf="chatForm.get('consulta')?.invalid">Ingrese una consulta</mat-error>
           </mat-form-field>
   
