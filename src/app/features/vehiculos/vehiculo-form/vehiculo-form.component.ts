@@ -11,7 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
-import Swal from 'sweetalert2'; // Importa SweetAlert2
+import { MatPaginatorModule } from '@angular/material/paginator'; // Importa el módulo del paginator
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-vehiculo-form',
@@ -24,7 +25,8 @@ import Swal from 'sweetalert2'; // Importa SweetAlert2
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,
-    HttpClientModule
+    HttpClientModule,
+    MatPaginatorModule  // Agregado para soportar <mat-paginator>
   ],
   templateUrl: './vehiculo-form.component.html',
   styleUrls: ['./vehiculo-form.component.scss'],
@@ -35,7 +37,6 @@ export class VehiculoFormComponent implements OnInit {
   isEditMode = false;
   isLoading = false;
   vehiculoId!: number;
-  // Al usar "placa" como identificador, no se convierte a número
   vehiculoPlaca!: string;
 
   constructor(
@@ -91,7 +92,6 @@ export class VehiculoFormComponent implements OnInit {
     const vehiculo: Vehiculo = { ...this.vehiculoForm.value };
     this.isLoading = true;
 
-    // Si está en modo edición se actualiza el vehículo
     if (this.isEditMode) {
       this.vehiculoService.update(this.vehiculoId, vehiculo).subscribe(
         () => {
@@ -107,7 +107,6 @@ export class VehiculoFormComponent implements OnInit {
       return;
     }
 
-    // Si no está en modo edición se crea un vehículo nuevo
     this.vehiculoService.create(vehiculo).subscribe(
       () => {
         this.mostrarAlerta('Vehículo registrado correctamente', 'success').then(() => {
@@ -121,11 +120,6 @@ export class VehiculoFormComponent implements OnInit {
     );
   }
 
-  /**
-   * Muestra una alerta bonita usando SweetAlert2.
-   * @param mensaje Texto de la alerta.
-   * @param icon Tipo de alerta: 'success' o 'error'.
-   */
   mostrarAlerta(mensaje: string, icon: 'success' | 'error') {
     return Swal.fire({
       icon: icon,

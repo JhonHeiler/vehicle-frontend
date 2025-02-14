@@ -9,8 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
-import { HttpClientModule } from '@angular/common/http';  // <-- IMPORTA ESTO
+import { HttpClientModule } from '@angular/common/http';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-vehiculos',
@@ -23,7 +27,10 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
     MatProgressSpinnerModule,
     MatCardModule,
     HttpClientModule,
-    MatPaginatorModule 
+    MatPaginatorModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule       
   ],
   templateUrl: './vehiculos.component.html',
   styleUrls: ['./vehiculos.component.scss'],
@@ -31,11 +38,13 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 })
 export class VehiculosComponent implements OnInit {
   vehiculos: Vehiculo[] = [];
-  isLoading = true; // Para mostrar spinner de carga
+  isLoading = true;
 
-  // Propiedades para la paginación
   pageSize = 6;
   currentPage = 0;
+
+
+  searchText: string = '';
 
   constructor(
     private vehiculoService: VehiculoService,
@@ -60,30 +69,62 @@ export class VehiculosComponent implements OnInit {
     );
   }
 
-  // Getter para obtener los vehículos de la página actual
-  get paginatedVehiculos(): Vehiculo[] {
-    const startIndex = this.currentPage * this.pageSize;
-    return this.vehiculos.slice(startIndex, startIndex + this.pageSize);
+
+  get filteredVehiculos(): Vehiculo[] {
+    return this.vehiculos.filter(v =>
+      v.placa.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
-  // Método que se dispara al cambiar de página
+  get paginatedVehiculos(): Vehiculo[] {
+    const filtered = this.filteredVehiculos;
+    const startIndex = this.currentPage * this.pageSize;
+    return filtered.slice(startIndex, startIndex + this.pageSize);
+  }
+
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
   }
 
+
+  onSearchChange() {
+    this.currentPage = 0;
+  }
+
   eliminarVehiculo(id?: number) {
     if (!id) return;
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡Esta acción no se puede revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.vehiculoService.delete(id).subscribe(
+          () => {
+            this.vehiculos = this.vehiculos.filter((v) => v.id !== id);
+            this.mostrarAlerta('Vehículo eliminado con éxito', 'success');
+          },
+          () => this.mostrarAlerta('Error al eliminar el vehículo', 'error')
+        );
+      }
+    });
+  }
 
-    if (confirm('¿Estás seguro de que quieres eliminar este vehículo?')) {
-      this.vehiculoService.delete(id).subscribe(
-        () => {
-          this.vehiculos = this.vehiculos.filter((v) => v.id !== id);
-          this.mostrarMensaje('Vehículo eliminado con éxito', 'Cerrar');
-        },
-        () => this.mostrarMensaje('Error al eliminar el vehículo', 'Cerrar')
-      );
-    }
+
+  mostrarAlerta(mensaje: string, icon: 'success' | 'error') {
+    return Swal.fire({
+      icon: icon,
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 1500,
+      position: 'top-end'
+    });
   }
 
   mostrarMensaje(mensaje: string, accion: string) {

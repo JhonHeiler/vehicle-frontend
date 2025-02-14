@@ -1,47 +1,76 @@
 <div class="container">
-  <h2 class="text-center mt-3">Lista de Vehículos</h2>
+  <h2 class="title">Lista de Vehículos</h2>
 
-  <button mat-raised-button color="primary" class="mb-3" (click)="navegarA('/vehiculos/nuevo')">
-    <mat-icon>add</mat-icon> Agregar Vehículo
-  </button>
+  <div class="action-bar">
+    <button 
+      mat-raised-button 
+      color="primary" 
+      class="agregar-vehiculo-btn" 
+      (click)="navegarA('/vehiculos/nuevo')">
+      <mat-icon>add</mat-icon>
+      Agregar Vehículo
+    </button>
+  
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Buscar por placa</mat-label>
+      <input
+        matInput
+        placeholder="Ingrese la placa"
+        [(ngModel)]="searchText"
+        (ngModelChange)="onSearchChange()"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
 
   <mat-spinner *ngIf="isLoading" class="loading-spinner"></mat-spinner>
 
-  <mat-card *ngIf="!isLoading">
-    <table class="table table-hover">
-      <thead class="table-dark">
-        <tr>
-          <th>Placa</th>
-          <th>Marca</th>
-          <th>Modelo</th>
-          <th>Color</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Utilizamos la propiedad paginada -->
-        <tr *ngFor="let vehiculo of paginatedVehiculos">
-          <td>{{ vehiculo.placa }}</td>
-          <td>{{ vehiculo.marca }}</td>
-          <td>{{ vehiculo.modelo }}</td>
-          <td>{{ vehiculo.color }}</td>
-          <td>
-            <button mat-icon-button color="primary" (click)="navegarA('/vehiculos/detalle/' + vehiculo.placa)">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button mat-icon-button color="accent" (click)="navegarA('/vehiculos/editar/' + vehiculo.placa)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="eliminarVehiculo(vehiculo.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Componente de paginación -->
-    <mat-paginator [length]="vehiculos.length"
+  <mat-card *ngIf="!isLoading" class="vehiculos-card">
+    <div class="table-responsive">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Placa</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Color</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vehiculo of paginatedVehiculos" class="table-row">
+            <td>{{ vehiculo.placa }}</td>
+            <td>{{ vehiculo.marca }}</td>
+            <td>{{ vehiculo.modelo }}</td>
+            <td>{{ vehiculo.color }}</td>
+            <td>
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="navegarA('/vehiculos/detalle/' + vehiculo.placa)"
+                matTooltip="Ver Detalle">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="accent"
+                (click)="navegarA('/vehiculos/editar/' + vehiculo.placa)"
+                matTooltip="Editar Vehículo">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="eliminarVehiculo(vehiculo.id)"
+                matTooltip="Eliminar Vehículo">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <mat-paginator [length]="filteredVehiculos.length"
                    [pageSize]="pageSize"
                    [pageSizeOptions]="[6, 12, 18]"
                    (page)="onPageChange($event)">

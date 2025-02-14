@@ -1,6 +1,39 @@
 .container {
   max-width: 900px;
-  margin: auto;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+.title {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #3f51b5; 
+}
+
+.action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+  min-height: 80px; 
+
+  .agregar-vehiculo-btn {
+    height: 56px;      
+    line-height: 56px;
+    padding: 0 16px;  
+  }
+
+  mat-form-field.full-width {
+    margin-top: 20px; 
+  }
+}
+
+.full-width {
+  flex: 1;
+  min-width: 250px;
 }
 
 .loading-spinner {
@@ -8,45 +41,42 @@
   margin: 40px auto;
 }
 
-mat-card {
+.vehiculos-card {
   padding: 20px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-
-h2 {
-  font-weight: 600;
-}
-
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  text-align: left;
-  vertical-align: middle;
-  padding: 10px;
-}
-
-
-th:nth-child(1), td:nth-child(1) { width: 15%; } /* Placa */
-th:nth-child(2), td:nth-child(2) { width: 20%; } /* Marca */
-th:nth-child(3), td:nth-child(3) { width: 20%; } /* Modelo */
-th:nth-child(4), td:nth-child(4) { width: 15%; } /* Color */
-th:nth-child(5), td:nth-child(5) { width: 30%; } /* Acciones */
-
-
-td:last-child {
-  white-space: nowrap;
-}
-
-
-.mat-icon-button {
-  margin: 0 5px;
-}
-
 
 .table-responsive {
   overflow-x: auto;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Roboto', sans-serif;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.custom-table thead {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.custom-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.3s ease;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.mat-icon-button {
+  margin: 0 4px;
 }
